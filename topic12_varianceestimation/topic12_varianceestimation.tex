@@ -1,0 +1,123 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Variance Estimation in the Linear-Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent So far, variance estimation has relied on the assumption that $ \var \left( \bm{e} \bm{e}' \mid \bm{x} \right) = \sigma^2 I_N$. To explore generalizations of this assumption recall that 
+\begin{align}
+	\var \left( \bm{\hat{\beta}} \mid \bm{x} \right) & = \mathbb{E} \left[ { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{x}' \bm{e} \bm{e}' \bm{x} { \left( \bm{x}' \bm{x} \right) }^{-1} \mid \bm{x} \right]. 
+\end{align} 
+
+\noindent \textbf{Robust Variance Estimators.} These class of estimators focus on estimating a crucial element in that variance, $\bm{x}' \bm{e} \bm{e}' \bm{x}$. The  $kk'$ entry of this element is $\{ \sum \limits _{i \in \mathcal{I}} \sum \limits _{j \in \mathcal{I}} x_{ik} x_{jk'} e_i e_j \}$. The idea is to place structure on $\bm{x}' \bm{e} \bm{e}' \bm{x}$ to estimate it by replacing $\bm{e}$ with $\bm{\hat{e}}$ (given that $\bm{\hat{e}}$ is a consistent estimator of $\bm{e}$ while being careful because $\bm{x}' \bm{\hat{e}} = \bm{0}$. That is, form estimators $\hat{\Omega} \left( \omega \right)$ in
+\begin{align}
+	\var \left( \bm{\hat{\beta}} \mid \bm{x} \right) & = \frac{1}{N} \left[ { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \hat{\Omega} \left( \omega \right) { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \right], 
+\end{align}
+\noindent where the $kk'$ element of $\hat{\Omega} \left( \omega \right)$ is $\{ \frac{1}{N} \sum \limits _{i \in \mathcal{I}} \sum \limits _{j \in \mathcal{I}} \omega \left(i , j \right) x_{ik} x_{jk'} \hat{e}_i \hat{e}_j \}$.\\ 
+
+\noindent Being careful about the fact that $\bm{x}' \bm{\hat{e}} = \bm{0}$ means that the parametric assumption on $\omega \left(i , j \right)$ cannot be $\omega \left(i , j \right) = 1$ for all $i,j \in \mathcal{I}$.\\
+
+\noindent The usual specifications are the following:
+\begin{enumerate}
+	\item Huber-White Variance Estimator:
+		\begin{align}
+			\omega \left( i, j \right) = \left\{
+        \begin{array}{ll}
+            1 & \quad \text{ if } i = j \\
+            0 & \quad \text{ if } i \neq j.
+        \end{array}
+    		\right.
+		\end{align}
+\noindent This estimator is consistent when the variance of $e_i$ is heteroskedastic (any form of variance is allowed for as it is extracted from the data through the estimates of $e_i$). 
+
+\item Newey-West Estimator:
+		\begin{align}
+			\omega \left( i, j \right) = \left\{
+        \begin{array}{ll}
+            1 & \quad \text{ if } || i - j || < q\\
+            0 & \quad \text{ if otherwise,} 
+        \end{array}
+    		\right.
+		\end{align}
+\noindent where $|| i - j ||$ is a measure of distance between observation $i$ and $j$ and $q$ is a real positive number. In a time series context, $i$ and $j$ are periods. 
+
+\item Clustered Estimator: 
+		\begin{align}
+			\omega \left( i, j \right) = \left\{
+        \begin{array}{ll}
+            1 & \quad \text{ if }i,j \text{ share a cluster } \\
+            0 & \quad \text{ if otherwise}.
+        \end{array}
+    		\right.
+		\end{align}
+This estimator is consistent when the variance of $e_i$ is clustered as specified (any form of covariance within the cluster is allowed for as it is extracted from the data through the estimates of $e_i$). The challenge is that the ``true'' clustering is unknown. There is also a degrees-of-freedom adjustment so that 
+\begin{align}
+	\var \left( \bm{\hat{\beta}} \mid \bm{x} \right) & = \frac{ C }{ C - 1 }\frac{1}{N} \left[ { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \hat{\Omega} \left( \omega \right) { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \right], 
+\end{align}
+\noindent where $C$ is the number of clusters. In Stata, the adjustment is such that 
+\begin{align}
+	\var \left( \bm{\hat{\beta}} \mid \bm{x} \right) & = \frac{ N }{ N - K } \frac{ C }{ C - 1 }\frac{1}{N} \left[ { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \hat{\Omega} \left( \omega \right) { \left(  \frac{\bm{x}' \bm{x} }{N} \right)}^{-1} \right]. 
+\end{align}
+\noindent Either way, the fundamental aspect to realize about clustering is that the $t$-statistics for testing individual hypothesis has $C-1$ degrees of freedom. 
+\end{enumerate}
+
+\noindent A usual misconception is that robust variance-estimation methods are ``non-parametric,'' but they are not. While the methods let the data speak once $\omega \left( i , j \right) $ is specified (i.e., are robust to any form of correlation and heteroskedasticity once $\omega \left( i , j \right) $ is specified), the specification of $\omega \left( i , j \right) $ itself is a parameterization. \\
+
+\noindent \textbf{Generalized Least Squares (GLS).} This alternative used to be a core topic in econometrics years ago. It is not anymore because it has no advantage against robust methods or the bootstrap. A brief on GLS is the following. The sample model is 
+\begin{align}
+	\bm{y} & = \bm{x} \cdot \bm{\beta} + \bm{e} 
+\end{align}
+\noindent with $\bm{e} \sim \mathcal{N} \left( 0, \bm{V} \right)$. This already relaxes the standard assumption in the classic normal model, as $\sigma^2 I_N$ is a particular case of the general variance $\bm{V}$. As positive definite matrix, $\bm{V}$ could be Cholesky-decomposed as  $\bm{V} = \bm{P} \bm{P}'$. Standard matrix rules indicate that ${\bm{P}}^{-1} \bm{V} {\bm{P'}}^{-1} = I_N$. 
+
+\noindent A transformation of the sample model is 
+\begin{align}
+	{\bm{P}}^{-1} \bm{y} & = {\bm{P}}^{-1} \bm{x} \cdot \bm{\beta} + {\bm{P}}^{-1} \bm{e}. 
+\end{align}
+\noindent In this model the error term is ${\bm{P}}^{-1} \bm{e}$ and its variance is 
+\begin{align}
+	\var \left( {\bm{P}}^{-1} \bm{e} \mid \bm{x} \right) & = {\bm{P}}^{-1} \mathbb{E} \left[ \bm{e} \bm{e}' \mid \bm{x} \right] {\bm{P'}}^{-1} \nonumber \\ 
+	& = {\bm{P}}^{-1} \bm{V} {\bm{P'}}^{-1} \nonumber \\
+	& = I_N. 
+\end{align}
+\noindent That is, the variance of the transformed model is homoskedastic. If the rest of the assumptions of the model hold---in particular \textbf{Exogeneity}, it is possible to use the OLS estimator on the transformed model to  obtain a consistent estimate of $\bm{\beta}$ and obtain an expression for the variance:
+\begin{align}
+	\bm{\hat{\beta}}^{\text{GLS}} & = {\left( \left( {\bm{P}}^{-1} \bm{x} \right)' \left( {\bm{P}}^{-1} \bm{x} \right) \right)}^{-1} \left( \left( {\bm{P}}^{-1} \bm{x} \right)' \left( {\bm{P}}^{-1} \bm{y} \right) \right)  \nonumber \\
+							& = {\left( \bm{x}' \bm{V}^{-1} \bm{x} \right)}^{-1} {\left( \bm{x}' \bm{V}^{-1} \bm{y} \right)} \nonumber \\ 
+	\var \left( \bm{\hat{\beta}}^{\text{GLS}} \mid \bm{x} \right) & =  {\left( \bm{x}' \bm{V}^{-1} \bm{x} \right)}^{-1}.
+\end{align}
+\noindent In OLS, $\sigma^2$ is unknown and an unbiased estimator is proposed. In GLS, $\bm{V}$ is unknown. Usually, an initial parameterization for $\bm{V}$ is proposed, an estimate of $\bm{\beta}$ is computed, and the process is repeated iteratively until it converges. This is referred to as FGLS (feasible generalized least squares). The process needs to be implemented carefully because $\bm{V}$ has $\frac{N \left ( N + 1 \right)}{2}$ distinct elements in its most general version and there are only $N$ observations in the sample. Not even a general diagonal of $\bm{V}$ could be freely estimated: That would require $N$ observations to estimate the variance and would leave no degrees of freedom for estimating $\bm{\beta}$.\\
+
+\noindent \textbf{The Bootstrap.} The general idea for the bootstrap is the following. Let $z_i = \left( y_i, \bm{x}_i \right)$ be the observation pair for individual $i \in \mathcal{I}$. Bootstrap relies on the principle of constructing ``fresh,'' valid samples from the sample in hand. These samples would be draws from the same population. The steps are: 
+\begin{enumerate}
+	\item In the sample $\mathcal{Z} := \left( z_1, \ldots, z_N \right)$ compute the estimate $\hat{\theta}$. 
+	\item From the sample $\mathcal{Z} := \left( z_1, \ldots, z_N \right)$, resample with replacement to construct $B$ alternative samples $\mathcal{Z}_{1}, \ldots \mathcal{Z}_{B}$. A crucial aspect is that the resampling could be clustered at any level of the researcher's choice.  
+	\item Compute the $B$ estimates using each of these ``bootstrap'' samples: $\hat{\theta}_1, \ldots, \hat{\theta}_B$. 	
+	\item The estimates $\hat{\theta}_1, \ldots, \hat{\theta}_B$ provide the bootstrap distribution of $\theta$, and enable computing distribution moments. The most important of these moments is the standard deviation, which is an estimate of the standard error of $\theta$. 
+	\item For testing simple hypothesis, $t$-statistic is formed by the quotient of the estimate of $\theta$ and the bootstrap standard error. The statistic distributes $t$ with $\left( N-K \right)$ degrees of freedom. If $\left( N-K \right) \rightarrow \infty$, the distribution is normal standard.
+\end{enumerate}  
+
+\noindent Bootstrap is an intuitive procedure. It is especially useful in estimation methods with unknown expressions for the variance. Even if a researcher does not know the form of the variance, she can replicate the estimation procedure in bootstrap samples to estimate standard errors. The number of replications, $B$, should formally be a number $B$ when the estimates of the standard errors converge. An arbitrary rule such as $B = 1,000$ is usually accepted.\\
+
+\noindent \textbf{Non-Parametric $\bm{p}$-values.} Another appealing feature of the bootstrap is that, having the bootstrap distribution in hand, enables estimating non-parametric $p$-values easily. That is, it enables computing inference without imposing a specific distribution. Recall that the $p$-value is the probability of not rejecting the null (under the null hypothesis). To compute the non-parametric $p$-value of a hypothesis on an estimate $\theta$: 
+\begin{enumerate}
+	\item Compute the distribution $\hat{\theta}_1, \ldots, \hat{\theta}_B$. 
+	\item Impose the null hypothesis on the distribution (e.g., if the null hypothesis is that $\theta = 1$, demean the distribution and displace it to have a mean of $1$ by summing $1$ to each of the elements of the bootstrap distribution). This is called the ``null distribution.''
+	\item Compare each value of the null distribution to the estimate $\hat{\theta}$ to compute the fraction of times that the null hypothesis is not rejected. This fraction is the non-parametric $p$-value.  
+\end{enumerate}
+
+
+
+
+
+
+
+
+\end{document}

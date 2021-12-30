@@ -1,0 +1,75 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Maximum Likelihood and Efficiency in the Classic (Normal) Linear Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent The (normal) sample model for $i \in \mathcal{I}$ is
+\begin{align}
+	y_i = \bm{x}_i \cdot \bm{\beta} + e_i \label{model}
+\end{align}
+\noindent with $e_i \sim_{\text{i.i.d.}} \mathcal{N} \left( 0, \sigma^2 \right)$. \\ 
+
+\noindent Maximum likelihood is an estimation method based on the following principle: Estimate $\bm{\beta}$ by maximizing the likelihood that the sample   is drawn from a population characterized by the model in Equation~\eqref{model}.\\
+
+\noindent The likelihood function for $i \in \mathcal{I}$ is:
+\begin{align}
+	L_i \left( \bm{\beta}, \sigma^2 \mid \bm{x} \right) & = \frac{1}{\sqrt{2 \pi \sigma^2}} \cdot \exp{ \left( - \frac{1}{2} \cdot \frac{ e_i^2 }{ \sigma^2 } \right) } \nonumber \\ 
+	& = \frac{1}{\sqrt{2 \pi \sigma^2}} \cdot \exp{ \left( - \frac{1}{2} \cdot \frac{ \left( y_i - \bm{x}_i \cdot \bm{\beta} \right)^2 }{ \sigma^2 } \right) } 
+\end{align}
+
+\noindent The fact that $e_i$ is identically and independently distributed enables writing the joint distribution of the sample as the product of $L_i \left( \bm{\beta}, \sigma^2 \mid \bm{x} \right)$ for all of the individuals in $\mathcal{I}$: 
+\begin{align}
+	L \left( \bm{\beta}, \sigma^2 \mid \bm{x} \right) & = \prod \limits _{i \in \mathcal{I}} L_i \left( \bm{\beta}, \sigma^2 \mid \bm{x} \right) \nonumber \\ 
+	  & = {\left( 2 \pi \sigma^2 \right)}^{\frac{-N}{2}} \exp{ \left( \frac{-1}{2 \sigma^2} \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right)' \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right) \right) },  
+\end{align}
+
+\noindent which is the object to maximize. A usual transformation for simplifying the maximization uses the logarithmic form. The log-likelihood function is:
+\begin{align}
+	\mathcal{L} \left( \bm{\beta}, \sigma^2 \mid \bm{x} \right) = - \frac{N}{2} \ln \left( 2 \pi \right)  - \frac{N}{2} \ln \left( \sigma^2 \right) - \frac{1}{2 \sigma^2} \cdot \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right)' \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right). 
+\end{align}
+
+\noindent The first order conditions are: 
+\begin{align}
+	\frac{\partial \mathcal{L} \left( \cdot \right) }{\partial \bm{\beta} } & = -\frac{1}{ \hat{\sigma}^2 } \left( -  \bm{x}' \bm{y} +  \bm{x}' \bm{x} \bm{\hat{\beta}} \right) = 0 \nonumber \\ 
+	\frac{\partial \mathcal{L} \left( \cdot \right) }{\partial \sigma^2 } & = -N + \frac{ \bm{\hat{e}}' \bm{\hat{e}} } { \hat{\sigma}^2 } = 0.
+\end{align}
+
+\noindent Therefore $\bm{\hat{\beta}}^{\text{ML}} = \bm{\hat{\beta}}^{\text{OLS}}$ and $ { \hat{\sigma}^{2, \text{ML} } } = \frac{ \bm{\hat{e}}' \bm{\hat{e}} } {N}$. As discussed before, the $\text{ML}$ estimator of $\sigma^2$ is the ``natural'' estimator, which is biased but consistent. To see this, note that the unbiased estimator is ${ \hat{\sigma}^{2} } = \frac{ \bm{\hat{e}}' \bm{\hat{e}} } {N - K}$ and that $\lim_{N \rightarrow \infty} N - K = N$.\\ 
+
+\noindent \textbf{Relative Efficiency.} The estimator $\bm{\theta}^1$ is more efficient that $\bm{\theta}^2$ iff $\var \left( \bm{\theta}^1 \right) < \var \left( \bm{\theta}^2 \right)$.\\ 
+
+\noindent \textbf{Absolute Efficiency.} Let $\bm{\hat{\theta}}$ be a consistent estimator. $\bm{\hat{\theta}}$ is absolutely efficient if $\var \left( \bm{\hat{\theta}} \right) := I \left( \bm{\hat{\theta}} \right)^{-1}$. Where I $\left( \bm{\hat{\theta}} \right) =  - \mathbb{E} \left[ \frac{ \mathcal{L} \left( \bm{\hat{\theta}} \right) } { \partial \bm{\theta}' \partial \bm{ \bm{\hat{\theta}} }  } \right]$. $I \left( \bm{\hat{\theta}} \right)$ is commonly referred to as the information matrix. As before, $\mathcal{L}$ denotes the log-likelihood. \\
+
+\noindent ML is efficient and consistent, and therefore the best estimator available. When it is an estimator of the classic (normal) linear regression model, it is BLUE: best, linear, unbiased estimator. ``Best'' refers to absolute efficiency.  $\bm{\bm{\hat{\theta}}}^{\text{ML}} = \bm{\bm{\hat{\theta}}}^{\text{OLS}}$ implies that OLS is also BLUE.\\ 
+
+\noindent \textbf{The Variance of ML.} The Hessian of the log-likelihood function is: 
+\begin{align}
+	\frac{ \mathcal{L} \left( \theta \right) } { \partial \bm{\theta}' \partial \bm{ \theta } } & = \begin{bmatrix}
+ 							\frac{ \partial \mathcal{L}  } { \partial \bm{\beta}' \bm{ \beta} } & \frac{ \partial \mathcal{L}  } { \sigma^2 \bm{\beta} \bm{ \beta} } \\ 
+ 							\frac{ \partial \mathcal{L}  } { \partial \bm{\beta}' \sigma^2 } & \frac{ \partial \mathcal{L}  } { \partial \sigma^2 \partial \sigma^2 }
+ 						\end{bmatrix} \nonumber \\
+ 					   & = \begin{bmatrix}
+ 					   			\frac{-1}{ \sigma^2} \bm{x}' \bm{x} & \frac{-1}{\sigma^4} \bm{x}' \bm{e}  \\
+ 					   			\frac{-1}{\sigma^4} \left( \bm{x}' \bm{e} \right) ' & \frac{N}{2 \sigma^4} - \frac{ \bm{e}' \bm{e} } { \sigma^4 } 
+ 					   	 	\end{bmatrix} 
+\end{align}
+
+\noindent Taking expectation and using \textbf{Exogeneity},  inverting, and replacing the true value of $\sigma^2$ with its estimator: 
+\begin{align}
+	\var \left( \bm{\hat{\theta}} \right) = \hat{\sigma}^{2,\text{ML}} \begin{bmatrix}
+ { \left( \bm{x}' \bm{x} \right) }^{-1} & \bm{0} \\
+ \bm{0} & \frac{ 2 \hat{\sigma}^{2,\text{ML}} } { N}
+ \end{bmatrix}. 
+\end{align}
+
+
+
+\end{document}

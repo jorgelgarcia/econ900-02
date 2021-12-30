@@ -1,0 +1,97 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Linear-regression Setup: Basic Mechanics.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent \textbf{The Two-Variable Population Model:}
+
+\begin{equation}
+y_i = \alpha + x_i \cdot \beta + \varepsilon_i.
+\end{equation}
+
+\noindent \textbf{The Two-Variable Sample Model:}
+
+\begin{equation}
+y_i = a + x_i \cdot b + e_i.
+\end{equation}
+
+\noindent \textbf{Two-variable Linear Regression Model: Estimation.} The motivation of the class makes it clear that the objective is to find the parameter estimates that best fit the sample data. Let $\mathcal{I}$ index the individuals in the sample with typical element $i \in \mathcal{I}$. The \textit{ordinary least squares} (OLS) estimator minimizes the squared sum of residuals:
+\begin{align}
+\min_{a,b} 	\sum \limits _{i \in \mathcal{I}} {\left( y_{i} - \hat{y}_i \right)}^2 \label{eq:problemtwo}
+\end{align}
+\noindent with $\hat{y}_i:= a + x_{i} \cdot b$.\\
+
+\noindent \textbf{Terminology.} OLS is an \textit{estimator}; it is the estimation procedure through which the estimates are obtained. The solution to the problem in Equation~\eqref{eq:problemtwo} for a given sample provides the estimates of the parameters $a$ and $b$. Different samples of the same population yield different estimates of $a$ and $b$, even when the objective is to estimate the same parameters using the same estimator. The estimates are different due to \textit{sampling variation}. This is represented by the difference between $\alpha$ and $a$ and $\beta$ and $b$. Quantifying the magnitude of sampling variation is crucial; this is done by estimating the standard errors of the estimates. More on standard errors later in the course.\\ 
+
+\noindent \textbf{The OLS Estimators of a and b.} The first order conditions of the problem in Equation~\eqref{eq:problemtwo} yield
+
+\begin{align}
+		\bar{y} & =   \hat{a}  +  \bar{x} \cdot \hat{b} \label{eq:problemtwoa} \\
+		\hat{b} & =  \frac{ \sum \limits _{i \in \mathcal{I} } \left( x_{i} - \bar{x} \right)  \left( y_{i} - \bar{y} \right) } { \sum \limits _{i \in \mathcal{I} } { \left( x_{i} - \bar{x} \right) }^2 } \label{eq:problemtwob}, 
+\end{align}
+
+\noindent where $\bar{k} = \frac{1}{N} \cdot \sum \limits _{i \in \mathcal{I} } k_{i}$ for $k = x, y$, and $N$ is the number of observations in the sample (i.e.,\ the cardinality of $\mathcal{I}$). The `` $\hat{ }$ '' indicates ``estimator.'' That is, the Equations~\eqref{eq:problemtwoa} and~\eqref{eq:problemtwob} are the OLS estimators of $a$ and $b$. The sample values could be plugged into these equations to obtain the estimates.\\ 
+
+\noindent \textbf{Basic Properties of the Two-variable Linear Regression Model OLS Estimator.} Equations~\eqref{eq:problemtwoa} and~\eqref{eq:problemtwob} indicate that
+\begin{enumerate}
+	\item The OLS estimator passes through the ``average'' observation in the sample. 
+	\item The OLS estimator of $b$ is the sample covariance of $x_i$ and $y_i$ over the variance of $x_i$. 
+\end{enumerate}
+
+\noindent \textbf{The Multivariate Population Model:}
+
+\begin{equation}
+y_i = \beta_0 + x_{i1} \cdot \beta_1 + \cdots + x_{iK} \cdot \beta_K  + \varepsilon_i, 
+\end{equation}
+\noindent where $K > 1$.\\
+
+\noindent \textbf{The Multivariate Sample Model:}
+
+\begin{equation}
+y_i = \beta_0 + x_{i1} \cdot \beta_1 + \cdots + x_{iK} \cdot \beta_K  + e_i,
+\end{equation}
+\noindent where, in an abuse of notation, the coefficients of the sample model are not relabeled as in the two-variable model.\\
+
+\noindent In matrix form, the model for all of the observations in the sample is
+\begin{equation}
+	\bm{y} = \bm{x} \cdot \bm{\beta} + \bm{e},  	
+\end{equation}
+
+\noindent where $\bm{y} := {\begin{bmatrix} y_{1} \\ \vdots \\ y_{N} \end{bmatrix}}_{N \times 1}$, $\bm{x}:= {\begin{bmatrix} x_{11}  & x_{12} & \cdots  & x_{1K} \\ 
+							  x_{21}  & x_{22} & \cdots  & x_{2K} \\
+							  \vdots  & \vdots & \ddots  & \vdots \\ 
+							  x_{N1}  & x_{N2} & \cdots  & x_{NK}							  \end{bmatrix}}_{N \times K}$, $\bm{\beta} := {\begin{bmatrix} \beta_{1} \\ \vdots \\ \beta_{K} \end{bmatrix}}_{K \times 1}$, and
+							  $\bm{e} := {\begin{bmatrix} e_{1} \\ \vdots \\ e_{N} \end{bmatrix}}_{N \times 1}$ (the subindices of the matrices indicate their dimensions). In an abuse of notation, I exclude the intercept when counting matrix dimensions. I only count the $K$ regressors associated with slopes. All models that I discuss, however, include an intercept.\\
+
+\noindent \textbf{The OLS estimator of $\bm{\beta}$}. The OLS estimator in the multivariate case is the solution to 
+\begin{align} 
+	\min_{\bm{\beta}} \bm{e}' \bm{e}	. \label{eq:problemtwomulti}
+\end{align}
+
+\begin{property} (Matrix Derivation Rule) Let $\bm{A}$ be a $1 \times K$ vector and $\bm{\beta}$ a $K \times 1$ vector. Then, $\frac{\partial \bm{A}\bm{\beta}}{\partial \bm{\beta}} = \bm{A}'$. Likewise,  $\frac{\partial \bm{A}\bm{\beta}}{\partial \bm{\beta}'} = \bm{A}$. 
+\end{property}
+
+\begin{property} (Matrix Derivation Rule) Let $\bm{A}$ be a $K \times K$ matrix and $\bm{\beta}$ a $K \times 1$ vector. Then, $\frac{\partial \bm{\beta}' \bm{A} \bm{\beta}}{\partial \bm{\beta}} = \left( \bm{A} + \bm{A}' \right) \bm{\beta}$. 
+\end{property}
+
+\noindent To write down the first order conditions of the problem in Equation~\eqref{eq:problemtwomulti}, note that
+\begin{align}
+	\bm{e}' \bm{e} &= \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right)' \left( \bm{y} - \bm{x} \cdot \bm{\beta} \right) \nonumber \\
+	               &= \bm{y}' \bm{y} - 2 \bm{y}'\bm{x}\bm{\beta} + \bm{\beta} \bm{x}'\bm{x} \bm{\beta}. 
+\end{align}
+\noindent Using \textbf{Rules 1} and \textbf{2}: 
+\begin{align}
+	\hat{\bm{\beta}} = {\left( \bm{x}'\bm{x} \right)}^{-1} \bm{x}' \bm{y}. 
+\end{align}
+\noindent The solution exists if the matrix $\left( \bm{x}'\bm{x} \right)$ is invertible. That is, if the information in the $1, \ldots, K$ columns of $\bm{x}$ is linearly independent (and therefore $\bm{x}$ is full-rank or non-singular).\\ 
+
+\noindent \textbf{Note one more time:} This is still all estimation mechanics, and not yet economic interpretation. 
+\end{document}

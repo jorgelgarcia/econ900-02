@@ -1,0 +1,55 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Goodness of Fit.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent Recall that the (sample) model for $i \in \mathcal{I}$ is
+\begin{align}
+y_i = \bm{x}_i \cdot \bm{\beta} + e_i. \label{eq:model}
+\end{align}
+
+\noindent Estimation by OLS enables writing 
+\begin{align}
+y_i & = \bm{x}_i \cdot \hat{\bm{\beta}} + \hat{e}_i \nonumber \\ 
+    & = \hat{y}_i + \hat{e}_i. \label{eq:modele}
+\end{align}
+
+\noindent For the full sample,
+\begin{align}
+\bm{y} = \bm{x} \cdot \bm{\beta} + \bm{e}.
+\end{align}
+
+\noindent The variability of $y_{i}$ is 
+\begin{align}
+	\sum \limits _{i \in \mathcal{I} } {\left( y_i - \bar{y} \right)}^2 & = \left( M_0 \bm{y} \right)'  \left( M_0 \bm{y} \right) \nonumber \\ 
+	    & = \bm{y}' M_0 \bm{y}
+\end{align}
+\noindent where $M_0:= I_N - \frac{1}{N} \iota \iota'$ with $\iota' = \left[ 1, \cdots, 1 \right]$ (idempotent and symmetric).\\ 
+
+\noindent Note that $M_0 \bm{\hat{e}} = \bm{\hat{e}}$ and recall that $\bm{x}'\bm{\hat{e}} = \bm{0}$. Then, 
+\begin{align}
+ 	\bm{y}' M_0 \bm{y} = \bm{\hat{y}}' M_0 \bm{\hat{y}} + \bm{\hat{e}}' \bm{\hat{e}}, 
+\end{align}
+
+\noindent which allows breaking the variability of $y_{i}$ into ``explained by $\bm{x}$'' ($R^2$ or goodness of fit) and ``unexplained by $\bm{x}$:''
+
+\begin{align}
+	1 = \underbrace{ \frac{ \bm{\hat{y}}' M_0 \bm{\hat{y}} }{ \bm{\hat{y}}' M_0 \bm{\hat{y}} } }_{R^2} + \frac{\bm{\hat{e}}' \bm{\hat{e}}}{ \bm{\hat{y}}' M_0 \bm{\hat{y}} }. 
+\end{align}
+
+\noindent The $R^2$ is the fraction of variation in $\bm{y}$ explained by $\bm{x}$. Note that the derivation of the $R^2$ is only valid if $\bm{x}'\bm{\hat{e}} = \bm{0}$ (i.e., if the model in Equation~\eqref{eq:modele} has an intercept).\\
+
+\noindent To avoid ``artificial inflation'' of the $R^2$ by adding irrelevant variables (variables with little explanatory power), the adjusted $\bar{R}^2$ is an alternative. The adjusted $\bar{R}^2$ is: 
+		\begin{align}
+			\bar{R}^2 = 1 - \frac{ N - 1 }{ N - K } \left( 1 - R^2 \right), 
+		\end{align}
+\noindent where $\bar{R}^2 \leq R^2 \leq 1$. 
+\end{document}

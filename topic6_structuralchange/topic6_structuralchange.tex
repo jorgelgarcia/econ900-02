@@ -1,0 +1,58 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Structural Change in the Linear-Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent Structural change enables discussing the first case of heterogeneity in the parameter vector $\bm{\beta}$. In a two-variable model, an example of structural change is when there are two time periods. The parameters take one value for observations in the first period; they take other values in the second period. The sample model is 
+\begin{align}
+	y_i = \left\{
+        \begin{array}{ll}
+            a_1 + x_i \cdot b_1 + e_{i} & \quad t < t^* \\
+            a_2 + x_i \cdot b_2 + e_{i} & \quad t > t^*
+        \end{array}
+    \right.
+\end{align}
+
+\noindent Generalizing to a multivariate context for the full sample, a particular case where only the intercept changes is referred to as structural ``displacement.''
+
+\begin{align}
+	\bm{Y} & = {\begin{bmatrix}
+					\bm{y}_1 \\
+					\bm{y}_2
+			 \end{bmatrix}}_{N \times 1}  
+	\bm{X} =  {\begin{bmatrix}
+				1      & 0		 & x_{11}   & \cdots & x_{1K}	\\ 
+				\vdots & \vdots	 & \vdots 	& \ddots & \vdots   \\
+				1 	   & 0 		 & x_{n_11}	& \cdots & x_{n_1K} \\ 
+				0      & 1 		 & x_{(n_1+1)1}	& \cdots & x_{(n_1+1)K}	\\ 
+				\vdots & \vdots 	 & 	\vdots 	& \ddots & \vdots    \\ 
+				0	   & 1 		 & x_{(n_1 + n_2)1}	& \cdots & x_{(n_1 + n_2)K}	
+			 \end{bmatrix}}_{(n_1 + n_2) \times (K+1)} \nonumber \\
+			 \bm{\beta} & = {\begin{bmatrix}
+					{\beta}_0^1 \\
+					{\beta}_0^1 \\ 
+				 \bm{\tilde{\beta}}
+			 \end{bmatrix}}_{(K+1) \times 1}
+			\bm{e}  =  {\begin{bmatrix}
+					\bm{e}_1 \\
+					\bm{e}_2
+			 \end{bmatrix}}_{(N \times 1)} 
+\end{align}
+\noindent where $n_1 + n_2 =: N$. There are $n_1$ observations before $t^*$ and $n_2$ after. If $\var \left(e_i | \bm{x} \right) = \sigma^2$ for all $i \in \mathcal{I}$. Estimation by OLS is straightforward. The following hypotheses enable testing displacement: 
+\begin{align}
+	H_0 &: {\beta}_0^1 = {\beta}_0^2 \nonumber \\ 
+	H_1 &: {\beta}_0^1 \neq {\beta}_0^2 \nonumber,
+\end{align}
+
+\noindent and either a $t$-test for a linear combination of parameters or an $F$-test could be implemented. 
+
+\noindent In the matrix $\bm{X}$, the the first column sets to $0$ the intercept for the variables after $t^*$. The converse is true for the second column. If there were structural change, as opposed to displacement, this will be replicated for each of the variables and the parameter vector to be estimated would have dimension $2 \cdot K \times 1$. 
+\end{document}

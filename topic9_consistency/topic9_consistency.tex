@@ -1,0 +1,63 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Consistency in the Classic Linear Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent \textbf{Probability Limits.} A sequence $\{ x_n \}$ of random variables converges in probability towards the random variable $x$ if, for all $\varepsilon > 0$: 
+\begin{align}
+	   \plim_{N \rightarrow \infty} | x_{n} - x | & := \lim_{N \rightarrow \infty} \Pr \left( | x_{n} - x | > \varepsilon \right) \nonumber \\ 
+									   & = 0. 
+\end{align}
+
+\noindent \textbf{The Probability Limit of OLS: The Two-Variable Case.} Recall that the sample model for $i \in \mathcal{I}$ is 
+\begin{align}
+	y_i = a + b \cdot x_i + e_i. 
+\end{align}
+\noindent The estimator of b is
+\begin{align}
+\hat{b} & =  \frac{ \frac{1}{N} \cdot \sum \limits _{i \in \mathcal{I} } \left( x_{i} - \bar{x} \right)  \left( y_{i} - \bar{y} \right) } { \frac{1}{N} \cdot \sum \limits _{i \in \mathcal{I} } { \left( x_{i} - \bar{x} \right) }^2 }, 
+\end{align}
+which is the sample covariance of $x_i$ and $y_i$ divided by the covariance of $x_i$. It follows that 
+\begin{align}
+	\plim_{N \rightarrow \infty} \hat{b} = \frac{\cov \left( x_i, y_i \right)} {\var \left( x_i \right)}, 
+\end{align}
+\noindent a usual and very useful expression to explore the consistency of OLS. For the two-variable case and under \textbf{Exogeneity}: 
+\begin{align}
+		\plim_{N \rightarrow \infty} \hat{b} & = \frac{\cov \left( x_i, y_i \right)} {\var \left( x_i \right)} \nonumber \\
+											 & = \frac{\cov \left( x_i, a + b \cdot x_i + e_i \right)} {\var \left( x_i \right)} \\ 
+											 & = \frac{\cov \left( x_i, a \right) + b \cdot \var \left( x_i \right) + \cov \left( x_i,  e_i \right) } {\var \left( x_i \right)} \nonumber \\ 
+											 & = b,								 
+\end{align}
+\noindent which shows that $\hat{b}$ is consistent.\\
+
+\noindent \textbf{The Multivariate Case.} Consider a multivariate sample model for $i \in \mathcal{I}$. The explanatory variables are partitioned into the intercept and two blocks. The first block has one variable, ``the variable of interest.'' The second block has the rest of the variables. The model is
+\begin{align}
+	y_i = \beta_0 + x_{i1} \cdot \beta_1  + \bm{x}_{i2} \cdot \bm{\beta}_2 + e_i. 
+\end{align}
+
+\noindent To clarify, the third term in the model is $x_{i2} \cdot \beta_2 + \cdots + x_{iK} \cdot \beta_K$ (using the notation developed before). The results from partitioned regression indicate that 
+\begin{align}
+	\plim_{N \rightarrow \infty} \hat{\beta_1} = \frac{\cov \left( x_{i1}^*, y_i \right)} {\var \left( {x_i}^* \right)}. 
+\end{align}
+
+\noindent This result is useful: It enables partitioning the model into a block containing a variable of interest, for which consistency could be analyzed, in a simple one-dimensional expression with known properties (using rules for computing variances and covariances). Completing the calculation: 
+\begin{align}
+	\plim_{N \rightarrow \infty} \hat{\beta_1} & = \frac{\cov \left( x_{i1}^*, y_i \right)} {\var \left( {x_i}^* \right)} \nonumber \\ 
+											   & = \frac{\cov \left( x_{i1}^*, \beta_0 + x_{i1} \cdot \beta_1  + \bm{x}_{i2} \cdot \bm{\beta}_2 + e_i \right)} {\var \left( {x_i}^* \right)} \nonumber \\ 
+											   & = \beta_1, 
+\end{align}
+using \textbf{Exogeneity} and $x_{i1}^* \cdot \bm{x}_{i2} \cdot \bm{\beta}_2 = 0$ because $x_{i1}$ is ``clean'' of $\bm{x}_{i2}$ by the fundamental mechanics of OLS. 
+
+
+
+
+\end{document}

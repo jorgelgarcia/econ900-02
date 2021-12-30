@@ -1,0 +1,48 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Dummy or Dichotomic Variables.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent Dummy variables are explanatory (random) variables that take either of two values, $0$ or $1$. These variables enable transforming linear models in several ways and are fundamental to study structural change and displacement, and more  generally to evaluate policies.  For expositional simplicity, this note considers the two-variable linear-regression model.\\
+
+\noindent Let $D_i$ be a dummy, explanatory variable. The sample model for $i \in \mathcal{I}$ is
+\begin{align}
+	y_i = a + D_i \cdot b + e_i \label{spec1}
+\end{align}
+
+\noindent From the first order conditions of OLS, note that $\hat{a}$ is the sample average of $y_i$ for the individuals for whom $D_{i} = 0$; $\hat{a} + \hat{b}$ is the sample average of $y_i$ for the individuals for whom $D_{i} = 1$. Alternatively, the sample model for $i \in \mathcal{I}$ could be written as 
+\begin{align}
+	y_i = b_0 \cdot \bm{1} \left[ D_i = 0 \right] + b_1 \cdot \bm{1} \left[ D_i = 1 \right] + e_i. \label{spec2}
+\end{align}
+\noindent In this specification, $\hat{b}_0$ is the average of $y_i$ for the individuals for whom $D_{i} = 0$; $\hat{b}_1$ is the average of $y_i$ for the individuals for whom $D_{i} = 1$.\\
+
+\noindent The specification in Equation~\eqref{spec1} excludes the indicator for the individuals for whom $D_i = 0$, and keeps the intercept. The specification in Equation~\eqref{spec2} excludes the intercept and keeps the two indicators. Including the intercept and both indicators is impossible because of multicollinearity.\\
+
+\noindent A dummy variable helps indicating economic variables such as sex. It also helps indicating a policy status, such as being in a control or a treatment group.\\
+
+\noindent \textbf{Marginal Effects.} In models where the explanatory variables are continuous, the parameters of interest represent the marginal effect in $y_i$ upon a unit increase in the explanatory variable. In Equation~\eqref{spec1}, $b$ is analogous to a marginal effect. Under \textbf{Exogeneity}, 
+\begin{align}
+	b = \mathbb{E} \left[ y_i | D_i = 1 \right] - \mathbb{E} \left[ y_i | D_i = 0 \right]. 
+\end{align}
+\noindent That is, the ``marginal effect'' of being in the group of individuals for whom $D_i = 1$ relative to $D_i = 0$. This also enables linking the specifications in Equations~\eqref{spec1} and \eqref{spec2} by noting that $a = b_0$ and $b_1 = a + b$.\\
+
+\noindent \textbf{Multivariate Case.} If explanatory variables were added to Equation~\eqref{spec1}, then $\hat{a}$ would be the conditional sample average of $y_i$ and $\hat{b}$ would be the conditional marginal effect.\\ 
+
+\noindent \textbf{Multiple Categories.} Dummy variables could also be used to indicate multiple  categories. For three categories, the model for $i \in \mathcal{I}$ is
+\begin{align}
+	y_i = a + b \cdot \bm{1} \left[ \text{category 2} \right] +  c \cdot \bm{1} \left[ \text{category 3} \right] + e_i \label{spec3}. 
+\end{align}
+\noindent $b$ and $c$ are the marginal effects of being in categories 2 and 3, with respect to category 1. An alternative specification is
+\begin{align}
+	y_i = b_1 \cdot \bm{1} \left[ \text{category 1} \right] + b_2 \cdot \bm{1} \left[ \text{category 2} \right] + b_3 \cdot  \bm{1} \left[ \text{category 3} \right] + e_i \label{spec4}, 
+\end{align}
+\noindent and the link between the parameters follows in the same way as in the two-category case. 
+\end{document}

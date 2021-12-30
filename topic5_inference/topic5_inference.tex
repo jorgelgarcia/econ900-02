@@ -1,0 +1,124 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Inference in the Classic Normal Linear-Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent \textbf{Revisiting the Estimator of $\sigma^2$.} A ``natural'' estimator for $\var \left( e_i^2 \right) =: \sigma^2$ is the sample-estimator of $\mathbb{E} \left[ e_i^2 \right]$ (recall that $\mathbb{E} \left[ e_i \right] = 0$). That is $\frac{1}{N} \sum \limits _{i \in \mathcal{I}} \hat{e}_i^2 $. Earlier in the class, the alternative $\frac{1}{N-K} \sum \limits _{i \in \mathcal{I}} \hat{e}_i^2 $ was proposed. Inspecting the expected values of these estimators enables finding the unbiased estimator and exploring the distribution of the estimator of $\sigma^2$.\\ 
+
+\noindent To explore the expected values, note that
+\begin{align}
+	\bm{\hat{e}} & = M_x \bm{y} \nonumber \\ 
+				  & = M_x \left( \bm{x} \cdot \bm{\beta} + \bm{e} \right) \nonumber \\ 
+				  & = M_x \bm{e}
+\end{align}
+\noindent and that $M_x$ is idempotent. Then, 
+\begin{align}
+	\bm{\hat{e}}' \bm{\hat{e}} & = \bm{e}' M_x \bm{e}. 
+\end{align}
+\noindent Taking the expected value, 
+\begin{align}
+	\mathbb{E} \left[ \bm{\hat{e}}' \bm{\hat{e}} \mid \bm{x} \right] & = \mathbb{E} \left[ \bm{e}' M_x \bm{e} \mid \bm{x} \right] \nonumber \\
+			& = \mathbb{E} \left[ \tr \left( \bm{e}' M_x \bm{e} \mid \bm{x} \right) \right] \nonumber \\
+			& = \tr \left( \mathbb{E} \left[ \bm{e}' M_x \bm{e} \mid \bm{x}\right] \right) \nonumber \\ 
+			& = \tr \left( M_x \mathbb{E} \left[ \bm{e} \bm{e}' \mid \bm{x} \right] \right) \nonumber \\ 
+			& = \sigma^2 \cdot \tr \left ( Mx \right)  \nonumber \\
+			& = \sigma^2 \cdot \tr \left( I_N - \bm{x} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{x}' \right) \nonumber \\
+			& = \sigma^2 \cdot N + \sigma^2 \cdot \tr \left( \bm{x} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{x}' \right) \nonumber \\ 
+			& = \sigma^2 \cdot \left( N - K \right)
+\end{align}
+\noindent Therefore, the estimator $\hat{\sigma}^2 = \frac{1}{N-K} \sum \limits _{i \in \mathcal{I}} \hat{e}_i^2$ is the unbiased estimator (note that both this and the natural estimator are consistent). 
+
+\begin{theorem} \label{quad} (Distribution of a Quadratic Idempotent Form on a Standard Normal Vector) Let $\bm{u}$ be a $p \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{0}, I_p \right)$ and $A$ be a $p \times p$ idempotent matrix. Then, $\bm{u}' A \bm{u} \sim {\chi^2}_{\text{rank}\left(A\right)}$.  
+\end{theorem}
+\noindent Alternatively, write 
+\begin{align}
+\mathbb{E} \left[ \hat{\sigma}^2 \right] & = \frac{1}{N-K} \cdot \mathbb{E} \left[ \bm{\hat{e}}' \bm{\hat{e}} \mid \bm{x} \right] \nonumber \\
+	 & = \frac{1}{N-K} \cdot \mathbb{E} \left[ \bm{e}' M_x \bm{e} \mid \bm{x} \right] \nonumber \\
+	 & = \frac{\sigma^2}{N-K} \cdot \underbrace{ \mathbb{E} \left[ \frac{\bm{e}'}{\sigma} \cdot M_x \cdot \frac{\bm{e}}{\sigma} \mid \bm{x} \right] }_{N - K (\text{by Theorem~\ref{quad}}) } \nonumber \\ 
+	 & = \sigma^2 
+\end{align}
+\noindent and 
+\begin{align}
+\var \left[ \hat{\sigma}^2  \mid \bm{x} \right] & = \frac{\sigma^4}{ { \left( N-K \right) }^2 } \cdot \underbrace{ \var \left[ \frac{\bm{e}'}{\sigma} \cdot M_x \cdot \frac{\bm{e}}{\sigma}  \mid \bm{x} \right] }_{2 \cdot \left( N - K \right) (\text{by Theorem~\ref{quad}}) } \nonumber \\ 
+	 & = \frac{ 2 \cdot \sigma^4 }{ N - K}.  
+\end{align}
+
+\noindent \textbf{A First Hypothesis Test.} The distribution of $\bm{\hat{\beta}}$ is
+\begin{align}
+	\bm{\hat{\beta}} \sim \mathcal{N} \left( \bm{\beta}, \sigma^2 {\left( \bm{x}' \bm{x} \right)}^{-1} \right), 
+\end{align}
+\noindent with a known, unbiased estimator of $\sigma^2$. The matrix $\sigma^2 {\left( \bm{x}' \bm{x} \right)}^{-1}$ is the covariance matrix. The diagonal contains the variance of each of the elements of $\bm{\hat{\beta}}$ and the off-diagonals the covariances.\\ 
+
+\noindent The first hypothesis test is
+\begin{align}
+	H_0 & : \beta_k  = \beta_k^0 \nonumber \\ 
+	H_1 & : \beta_k  \neq \beta_k^0 \nonumber, 
+\end{align}
+\noindent where $\beta_k^0$ is a real number. A natural statistic is $z':= \frac{\hat{\beta}_k - \beta_k^0} { \sqrt{ \sigma^2 { \left( \bm{x}' \bm{x}  \right) }_{kk}^{-1} } }$. The statistic $z'$ is not useful in that it is a function of $\sigma^2$, as opposed to its estimator. The challenge is then to find the distribution of $z:= \frac{\hat{\beta}_k - \beta_k^0} { \sqrt{ \hat{\sigma}^2 { \left( \bm{x}' \bm{x}  \right) }_{kk}^{-1} } }$.
+
+\begin{theorem} \label{coe} (Distribution of the Ratio of a Standard Normal to a Chi-Squared) Let $z \sim \mathcal{N} \left( 0, 1 \right)$ and $u \sim \chi_{(n)}^2$ be independent random variables. Then, $\frac{z}{\sqrt{u/n}} \sim t_{(n)}$.
+\end{theorem}
+
+\noindent To find the distribution of $z$, note that $\frac{ \left( N - K \right) \cdot  \hat{\sigma}^2 }{ \sigma^2 } \sim \chi_{(N-K)}^2$. By Theorem~\ref{coe}, $z \sim t_{(N - K)}$. Theorem~\ref{linquad} grants the independence between the normal and $\chi^2$ forms. 
+
+\begin{theorem} \label{linquad} (Independence of a Linear and a Quadratic Form) A linear function $\bm{L} \cdot \bm{x}$ of a random vector $\bm{x}$ and a quadratic form $\bm{x} \cdot \bm{A} \cdot \bm{x}$ are independent if $\bm{L} \cdot \bm{A}=0$. 
+\end{theorem}
+
+\noindent \textbf{A Second Hypothesis Test.} A second hypothesis-test is based on one linear combination of parameters: 
+\begin{align}
+	H_0 & : \beta_k  + \beta_{k'}  = 0 \nonumber \\ 
+	H_1 & : \beta_k  + \beta_{k'}  \neq 0  \nonumber. 
+\end{align}
+
+\begin{theorem} (Standardization of a Normally Distributed Vector) \label{stand} Let $\bm{u}$ be a $p \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{\mu}, \bm{\Sigma} \right)$. Then, ${\Sigma}^{-1/2} \left( \bm{u} - \bm{\mu} \right)\sim \mathcal{N} \left( \bm{0}, I_p \right)$. 
+\end{theorem}
+
+\noindent It follows from the construction of the statistic for the first hypothesis that
+
+\begin{align}
+z & := \frac{\hat{\beta}_k - \hat{\beta}_{k'} } { \sqrt{ \hat{\sigma}^2 \cdot \left(  { \left( \bm{x}' \bm{x}  \right) }_{kk}^{-1} + \left( \bm{x}' \bm{x}  \right)_{k'k'}^{-1} +  2 \cdot \left( \bm{x}' \bm{x}  \right)_{k'k}^{-1} \right) } } \nonumber \\
+  & \sim_{H_0} t_{(N-K)}. 
+\end{align}
+
+\noindent \textbf{A Third Hypothesis Test.} Let $\bm{R}$ be a $j \times p$ matrix and $\bm{r}$ a $j \times 1$ vector. A simultaneous hypothesis of linear combinations of parameters is 
+\begin{align}
+	H_0 & : \bm{R} \bm{\beta} - \bm{r}  = 0 \nonumber \\ 
+	H_1 & : \bm{R} \bm{\beta} - \bm{r}  \neq 0  \nonumber. 
+\end{align}
+
+\begin{theorem} \label{lindists} (Distribution of a Linear Combination of Normal Random Variables) Let $\bm{u}$ be a $p \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{\mu}, \bm{\Sigma} \right)$. If $\bm{A}$ is $k \times p$ matrix and $\bm{b}$ is a $k \times 1$ vector, then $\bm{A} \bm{u} + \bm{b} \sim \mathcal{N} \left( \bm{A} \bm{\mu} + \bm{b}, \bm{A} \bm{\Sigma} \bm{A}'  \right)$.  	
+\end{theorem}
+
+\noindent By Theorem~\ref{lindists}, $\bm{R} \bm{\hat{\beta}} - \bm{r} \sim \mathcal{N} \left( \bm{R} \bm{\beta} - r , \sigma^2 \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R}' \right)$. By Theorem~\ref{stand}, $z = \frac{ \left( \bm{R} \bm{\hat{\beta}} - \bm{r} \right) } { \sqrt{ \sigma^2 \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R}' } } \sim_{H_0} \mathcal{N} \left( \bm{0}, I_p \right)$, which depends on $\sigma^2$ (a true value and not an estimator).   
+
+\begin{theorem} \label{wald} ( Wald Statistic) Let $\bm{u}$ be a $p \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{\mu}, \bm{\Sigma} \right)$. Then,\\ $\left( \bm{u} - \bm{\mu} \right)' \Sigma^{-1} \left( \bm{u} - \bm{\mu} \right) \sim \chi_{ ( \text{rank } \Sigma ) }^2$. 
+\end{theorem}
+
+\noindent Applying Theorem~\ref{wald} to $z$, $W = \left( \bm{R} \bm{\hat{\beta}} - \bm{r} \right)' \left[ \sigma^2 \bm{R} {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{R}'  \right] \left( \bm{R} \bm{\hat{\beta}} - \bm{r} \right) \sim_{H_0} \chi_{j}^2$. Further, recall that $\frac{ \left( N - K \right) \cdot  \hat{\sigma}^2 }{ \sigma^2 } \sim \chi_{(N-K)}^2$ and that the quotient of two independent $\chi^2$ random variables follows an $F$ distribution. Then, $W' = \left( \bm{R} \bm{\hat{\beta}} - \bm{r} \right)' \left[ \hat{\sigma}^2 \bm{R} {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{R}'  \right] \left( \bm{R} \bm{\hat{\beta}} - \bm{r} \right) \sim F \left( j, N - K \right)$. Independence of the two $\chi^2$ random variables is granted by Theorem~\ref{quadforms}.\\
+
+\begin{theorem} \label{quadforms} (Independence of Two Quadratic Independent Forms) Let $\bm{u}$ be a $p \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{0}, I_p \right)$ and $\bm{A}$ and $\bm{B}$ be idempotent $p \times p$ matrices. The forms $\bm{u}' \bm{A} \bm{u}$ and $\bm{u}' \bm{B} \bm{u}$ are independent if $\bm{A} \cdot \bm{B} = \bm{0}$. 
+\end{theorem}
+
+\noindent To verify this, note that $\frac{ (N-K) \cdot \hat{\sigma}^2 } {\sigma^2} = \left( \frac{\bm{e}'}{\sigma} \right) M_x \left( \frac{\bm{e}}{\sigma} \right)$ is a quadratic form. In the notation of Theorem~\ref{quadforms}, $\bm{A} = M_x$. Under the null hypothesis, $\bm{R \beta}= \bm{R \hat{\beta}}$. Thus, 
+\begin{align}
+W' = \left( \frac{\bm{e}'}{\sigma} \right) \bm{x} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R}' {\left[ \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R} \right]}^{-1} \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{x}' \left( \frac{\bm{e}}{\sigma} \right)	
+\end{align}
+\noindent In the notation of Theorem~\ref{quadforms}, $\bm{B} = \bm{x} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R}' {\left[ \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{R} \right]}^{-1} \bm{R} { \left( \bm{x}' \bm{x} \right) }^{-1} \bm{x}'$, where $\bm{B} \cdot \bm{B} = \bm{B}$. It immediately follows that $\bm{B} \cdot \bm{A} = \bm{0}$: $M_x$ ``annihilates'' $\bm{x}$.   
+\end{document}
+\end{document}
+
+
+
+
+
+
+
+\end{document}

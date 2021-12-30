@@ -1,0 +1,58 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Endogeneity and Instrumental Variables.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent A fundamental assumption of the classic linear-regression model is $\mathbb{E} \left[ e_i | \bm{x} \right] = 0$. This note introduces an ``old school'' treatment for when this assumption is not satisfied. Econ 900-03 treats several other solutions. The model for the sample is 
+\begin{align}
+	\bm{y} = \bm{x} \bm{\beta} + \bm{e} 
+\end{align}
+\noindent and the assumption $\mathbb{E} \left[ \bm{e} | \bm{x} \right] = 0$ does not hold because $ \cov \left( \bm{x}_k, \bm{e}  \right) \neq 0$ (i.e., $\bm{x}_k$ is endogenous). A solution is to find an instrumental variable $\bm{z}_{n \times 1}$ such that the following two conditions hold:
+\begin{align}
+	\textbf{Rank}: \ & \cov \left( \bm{x}_k, \bm{z} \right) \neq 0 \nonumber \\ 
+	\textbf{Exogeneity}: \ & \mathbb{E} \left[ \bm{e} | \bm{z} \right]= \bm{0}.
+	\nonumber \\
+\end{align}
+\noindent Instrumental variables (IV) estimation is a technique that empirically imposes the \textbf{Exogeneity} condition, generally referred to as moment condition. In OLS, the moment condition is $\mathbb{E} \left[ \bm{e} | \bm{x} \right] = 0$ and estimation imposes the empirical counterpart $\bm{x}' \bm{\hat{e}} = \bm{0}$. In IV, the moment condition is $\mathbb{E} \left[ \bm{e} | \bm{Z} \right] = 0$, with $\bm{Z} := \left[ \bm{x}_1, \ldots, \bm{x}_{k-1}, \bm{z}, \bm{x}_{k+1}, \ldots \bm{x}_K \right]$, and estimation imposes the empirical counterpart $\bm{Z}' \bm{\hat{e}} = \bm{0}$. Then,
+\begin{align}
+	\bm{Z}' \left( \bm{y} - \bm{x} \cdot \bm{\hat{\beta}}^{\text{IV}} \right) &= \bm{0} \nonumber \\
+	& \Leftrightarrow \nonumber \\ 
+	\bm{\hat{\beta}}^{\text{IV}} & = {\left( \bm{Z}' \bm{x} \right)}^{-1} \bm{Z}' \bm{x}. 
+\end{align}
+\noindent Calculations similar to those in OLS indicate that $\bm{\hat{\beta}}^{\text{IV}}$ is unbiased. Under normality,  
+\begin{align}
+	\var \left( \bm{\hat{\beta}}^{\text{IV}} \ \mid \bm{Z} \right) = \sigma^2 {\left( \bm{Z}' \bm{x} \right)}^{-1} { \left( \bm{Z}' \bm{Z}  \right) } {\left( \bm{x}' \bm{Z} \right)}^{-1}. 
+\end{align}
+
+\noindent Note that if the rank condition ``holds weakly'', the standard errors blow up.\\
+
+\noindent \textbf{Durbin-Wu-Hausman Test.} Let $\bm{\hat{\theta}}_1$ and $\bm{\hat{\theta}}_2$ be two estimators. The hypothesis is: 
+\begin{align}
+	H_0 & : \bm{\hat{\theta}}_1 \text{ and } \bm{\hat{\theta}}_2 \text{ are consistent and } \var \left( \bm{\hat{\theta}}_1 \right) <  \var \left( \bm{\hat{\theta}}_2 \right) \nonumber \\ 
+	H_1 & : \bm{\hat{\theta}}_2 \text{ is consistent}. \nonumber
+\end{align}
+
+\noindent A Wald-type statistic is 
+\begin{align}
+	W & = \left( \bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right)' \left[ \var \left( \bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right) \right] \left( \bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right) \nonumber \\
+	  & \sim \chi_{\text{rank} \var \left(\bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right)}^2, 
+\end{align}
+
+\noindent which could be computed with an estimate of $\sigma^2$ in hand and using Theorem~\ref{theorem} to compute the variance.
+
+\begin{theorem} \label{theorem} (Covariance of the Difference Between a Consistent Estimator and a Consistent, Inefficient Estimator) Let $\bm{\hat{\theta}}_1$ and $\bm{\hat{\theta}}_2$ be two consistent estimators with $\var \left( \bm{\hat{\theta}}_1 \right) <  \var \left( \bm{\hat{\theta}}_2 \right)$. Then, $\cov \left( \bm{\hat{\theta}}_1, \bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right) = \bm{0}$ which implies that $\var \left( \bm{\hat{\theta}}_1 - \bm{\hat{\theta}}_2 \right) = \var \left( \bm{\hat{\theta}}_1 \right) - \var \left( \bm{\hat{\theta}}_2 \right)$. 
+\end{theorem}
+
+\noindent A standard use of the Durbin-Wu-Hausman test is to test whether OLS is consistent against IV.
+
+
+\end{document}

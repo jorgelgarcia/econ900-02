@@ -1,0 +1,44 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Consistency in the Classic Linear Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent{\textbf{(Asymptotic) Omitted-Variable Bias.}} Suppose that the true (data-generating process) model is 
+\begin{align}
+	y_i = \beta_0 + x_{i1} \cdot \beta_1  + \bm{x}_{2} \cdot \beta_2 + e_i \label{real}, 
+\end{align}
+\noindent but that the researcher proposes the model 
+\begin{align}
+	y_i = \beta_0 + x_{i1} \cdot \beta_1 + u_i \label{real2} 
+\end{align}
+\noindent and estimates $\beta_0$ and $\beta_1$ by OLS. OLS, in such case, would not clean $x_{i1}$ from $x_{i2}$ in the estimation mechanics. Inspecting the probability limit: 
+\begin{align}
+	\plim_{N \rightarrow \infty} \hat{\beta}_1 & = \frac{ \cov \left( x_{i1}, y_{i} \right) } { \var \left( x_{i1} \right) } \nonumber \\ 
+	 & = \beta_1 + \beta_2 \cdot \frac{ \cov \left( x_{i1}, x_{i2} \right) } { \var \left( x_{i1} \right) }. 
+\end{align} 
+\noindent Omitting $x_{i2}$ from the estimation biases $\hat{\beta}_1$ by $\beta_2 \cdot \frac{ \cov \left( x_{i1}, x_{i2} \right) } { \var \left( x_{i1} \right) }$. Omitting $x_{i2}$ is innocuous only in the particular case where  $\cov \left( x_{i1}, x_{i2} \right) = 0$. The bias in this case is asymptotic because it is limiting (when $N \rightarrow \infty$).\\
+
+\noindent \textbf{Overfitting or Inclusion of Irrelevant Variables.} It follows directly from above that including an irrelevant variable $x_{i2}$ (i.e., assuming that $\beta_2 \neq 0$ when in the true model $\beta_2 = 0$) does not bias (asymptotically) $\hat{\beta}_1$.\\
+
+\noindent Overfitting, however, leads to a greater estimated variance of $\hat{\beta}_1$ (i.e.,\ including irrelevant information does not bias $\hat{\beta}_1$ but increases its variance). To see this, let $\hat{\beta}_1$ be the estimate under the correct specification of the model. Let $\hat{\tilde{\bm{\beta}}}$ be the estimate when the model is specified with $x_{i2}$ and $x_{i2}$ is irrelevant (this is a vector because two estimates are involved). 
+
+\noindent The variances of the estimators are: 
+
+\begin{align}
+	\var \left( \hat{\beta}_1 \mid \bm{x}_{1}, \bm{x}_{2}\right) & = \sigma^2 {\left( \bm{x}_{1}' \bm{x}_{1} \right)}^{-1} \nonumber \\
+	\var \left( \hat{\tilde{\bm{\beta}}} \mid \bm{x}_{1}, \bm{x}_{2}\right) & = \sigma^2 {\begin{bmatrix}
+ 								\bm{x}_{1}' \bm{x}_{1} & \bm{x}_{1}' \bm{x}_{2} \\ 
+ 								\bm{x}_{2}' \bm{x}_{1} & \bm{x}_{2}' \bm{x}_{2} 
+ 							\end{bmatrix}}^{-1}
+\end{align}
+\noindent Rules for matrix inversion by blocks yield that the first entry in $\var \left( \hat{\tilde{\bm{\beta}}} \mid \bm{x}_{1}, \bm{x}_{2}\right)$ is\\ $ { \left( \bm{x}_1' \bm{x}_1 - \bm{x}_1' \bm{x}_2 \left( \bm{x}_2 \bm{x}_2 \right) \bm{x}_2' \bm{x}_1  \right) }^{-1}$. This implies that $\var \left( \hat{\beta}_1 \mid \bm{x}_{1}, \bm{x}_{2}\right) < \var \left( \hat{\tilde{\beta}}_1 \mid \bm{x}_{1}, \bm{x}_{2}\right)$. 
+\end{document}

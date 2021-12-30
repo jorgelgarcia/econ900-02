@@ -1,0 +1,86 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Properties of OLS.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent Recall that the (sample) model is
+\begin{equation}
+\bm{y} = \bm{x} \cdot \bm{\beta} + \bm{e}, \label{eq:model}
+\end{equation}
+\noindent and that the estimated (OLS) residual vector is 
+\begin{align}
+\hat{\bm{e}} = \bm{y} - \bm{x} \cdot \hat{\bm{\beta}}.	
+\end{align}
+
+\noindent \textbf{Projection and Annihilation Matrices.} The residual is ``all of the variation'' in $\bm{y}$ not explained in $\bm{x}$: 
+\begin{align}
+	\hat{\bm{e}} & = \bm{y} - \bm{x} \cdot {\left( \bm{x}'\bm{x} \right)}^{-1} \bm{x}'\bm{y} \nonumber \\ 
+	 			 & = \left[ I_N - \bm{x} {\left( \bm{x}'\bm{x} \right)}^{-1} \bm{x}' \right] \bm{y} \nonumber \\ 
+	 			 & := \left[ I_{N} - P_x \right] \bm{y} \nonumber \\
+	 			 & := M_x \bm{y}, 
+\end{align}
+\noindent where $P_x$ is the projection matrix and $M_{x}$ is the annihilation matrix or ``residual maker.'' Multiplying $P_{x}$ by $\bm{y}$ yields $ \bm{x} \cdot \bm{\beta}$ under \textbf{Exogeneity} (the projection of $\bm{y}$ on $\bm{x}$; the part of $\bm{y}$ that $\bm{x}$ explains). Multiplying $M_{x}$ by $\bm{y}$ yields $\hat{\bm{e}}$ (the multiplication makes the residuals; it yields the part of $\bm{y}$ that $\bm{x}$ does not explain).\\
+
+\noindent \textbf{Properties of OLS.} The main properties of OLS are:
+\begin{enumerate}
+	\item The first order conditions of the OLS problem are
+		\begin{align}
+			\bm{x}' \bm{x} \hat{\bm{\beta}} - \bm{x}' \bm{y} & = \bm{0} \nonumber \\\
+			\bm{x}' \hat{\bm{e}} & = \bm{0}.
+		\end{align}
+\noindent OLS ``enforces'' the empirical counterpart of the \textbf{Exogeneity} assumption. 
+	\item From 1. and the standard specification of the first column of $\bm{x}$ as $\bm{x}_1 = \left[ 1, \cdots, 1 \right]$, $\sum \limits _{i \in \mathcal{I}} e_{i} = 0$. The sum of residuals, and therefore the average of the residuals, is $0$. 
+	\item From 1. and 2., $\frac{1}{N} \cdot \sum \limits _{i \in \mathcal{I}} e_{i} = 0$. This implies that $\bar{y} = \bar{\bm{x}} \cdot \bm{\hat{\beta}}$. That is, the (OLS) prediction for the average observation is equal to the average of the dependent variable.
+	\item From 1. and 2., it also follows that the average prediction is equal to the average of the dependent variable. 
+\end{enumerate}
+
+\noindent \textbf{Partitioned Regression.} Let $k_1$ and $k_2$ be less than $K$ and such that $k_1 + k_2 = K$. The sample model can be written as
+\begin{align}
+	\bm{y} = \bm{x}_1 \cdot \bm{\beta}_1 + \bm{x}_2 \cdot \bm{\beta}_2 + \bm{e}, 
+\end{align}
+\noindent where $\bm{x}:= \begin{bmatrix} \bm{x}_1 & \vdots & \bm{x}_2 \end{bmatrix}$ and $\bm{\beta} = \begin{bmatrix} \bm{\beta}_1 \\ \ldots \\ \bm{\beta}_2 \end{bmatrix}$. 
+
+\noindent The first order conditions of the OLS problem are 
+\begin{align}
+	\begin{bmatrix}
+		\bm{x}_1' \bm{x}_1 & \bm{x}_1' \bm{x}_2 \\
+		\bm{x}_2' \bm{x}_1 & \bm{x}_2' \bm{x}_2 
+	\end{bmatrix} \cdot
+	\begin{bmatrix}
+		\bm{\hat{\beta}}_1 \\
+		\bm{\hat{\beta}}_2	
+	\end{bmatrix} = 
+	\begin{bmatrix}
+		\bm{x}_1 \bm{y} \\ 
+		\bm{x}_2 \bm{y}
+	\end{bmatrix}, 
+\end{align}
+
+\noindent which yield a system to two (vectorial) equations with two unknown vectors: 
+\begin{align}
+	\bm{x}_1' \bm{x}_1 \bm{\hat{\beta}}_1 + \bm{x}_1' \bm{x}_2 \bm{\hat{\beta}}_2 & =  \bm{x}_1' \bm{y} \nonumber \\
+		\bm{x}_2' \bm{x}_1 \bm{\hat{\beta}}_1 + \bm{x}_2' \bm{x}_2 \bm{\hat{\beta}}_2 & =  \bm{x}_2' \bm{y}. 
+\end{align}
+
+\noindent Solving, 
+\begin{align}
+		\hat{\bm{\beta}}_1 & = {\left( \bm{x}_1' M_{\bm{x}_2} \bm{x}_1 \right)}^{-1} \bm{x}_1' M_{\bm{x}_2} \bm{y} \nonumber \\
+		\hat{\bm{\beta}}_2 & = {\left( \bm{x}_2' M_{\bm{x}_1} \bm{x}_2 \right)}^{-1} \bm{x}_2' M_{\bm{x}_1} \bm{y}
+\end{align}
+\noindent where $M_{\bm{x}_\ell}:= \left[ I_{N} - \bm{x}_\ell {\left( \bm{x}_\ell' \bm{x}_\ell \right)}^{-1} \bm{x}_\ell' \right]$ for $\ell = 1,2$ (note that $M_{\bm{x}_\ell}$ is idempotent).\\ 
+
+\noindent This illustrates the most fundamental mechanics of OLS. To estimate $\hat{\bm{\beta}}_1$, OLS ``cleans'' $\bm{x}_1$ and $\bm{y}$ from $\bm{x}_2$ and ``estimates'' OLS with the ``cleaned versions.'' To clarify this further, let $\bm{x}_1^*:= M_{\bm{x}_2} \bm{x}_1$, $\bm{x}_2^*:= M_{\bm{x}_1} \bm{x}_2$, $\bm{y}_1^*:= M_{\bm{x}_2} \bm{y}$, and $\bm{y}_2^*:= M_{\bm{x}_1} \bm{y}$ and note that
+\begin{align}
+		\hat{\bm{\beta}}_1 & = {\left( {\bm{x}_1^*}' \bm{x}_1^* \right)}^{-1}{\bm{x}_1^*}'\bm{y}_1^* \nonumber \\
+		\hat{\bm{\beta}}_2 & = {\left( {\bm{x}_2^*}' \bm{x}_2^* \right)}^{-1}{\bm{x}_2^*}'\bm{y}_2^*. 
+\end{align}
+
+\end{document}

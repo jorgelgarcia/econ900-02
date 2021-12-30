@@ -1,0 +1,43 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{Revisiting Inference in the Classic (Normal) Linear Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent \textbf{Likelihood Ratio Test.} Let $\bm{\theta}$ be a parameter vector of interest. A hypothesis is
+\begin{align}
+	H_0 & : r \left( \bm{\theta} \right) = 0 \nonumber \\
+	H_1 & : r \left( \bm{\theta} \right) \neq 0 \nonumber,
+\end{align}
+\noindent where $r$ is a function that maps a $k$-dimensional argument into a $q$-dimensional space. This function allows distinguishing between an unrestricted estimate and a restricted estimate (which imposes $H_0$). The likelihood ratio is
+\begin{align}
+	\lambda & = \frac{ L \left( \bm{\hat{\theta}}_r \right) } { L \left( \bm{\hat{\theta}}_u \right) } \nonumber \\ 
+		    & \leq 1, 
+\end{align}
+\noindent where $L \left( \cdot \right)$ is the sample likelihood. It is out of the scope of this class to show that 
+\begin{align}
+	- 2 \ln \lambda \sim {\chi^2}_{(q)}, 
+\end{align}
+\noindent which enables testing the hypothesis. This likelihood-ratio test uses both estimates, the restricted and the unrestricted.\\
+
+\noindent \noindent \textbf{Wald Test.} An alternative for testing $H_0$ is using a Wald test. The statistic (previously discussed) is 
+\begin{align}
+	W & = \left[ r ( \bm{\hat{\theta}}_u \right]' \left[ \var \left( r \left( \bm{\hat{\theta}}_u \right) \right) \right] \left[ r ( \bm{\hat{\theta}}_u \right] \nonumber \\ 
+	  & \sim {\chi^2}_{(q)}, 
+\end{align}
+
+\noindent where $\var \left(  \bm{\hat{\theta}}_u \right)$ is known but $\var \left( r ( \bm{\hat{\theta}}_u \right)$ is not. 
+
+\begin{theorem} \label{delta} (Delta Method) Let $\bm{u}$ be a $k \times 1$ vector with $\bm{u} \sim \mathcal{N} \left( \bm{\mu}, \bm{\Sigma} \right)$. Let $f \left( \bm{u} \right)$ be a function mapping a $k$-dimensional argument to a $q$-dimensional space. Then, $f \left( \bm{u} \right) \sim \mathcal{N} \left( f \left( \bm{\mu} \right) , J \left( \bm{\mu} \right) \bm{\Sigma} J \left( \bm{\mu} \right)' \right)$, where $J \left( \bm{\mu} \right)$ is the Jacobian matrix of $f \left( \cdot \right)$. 
+\end{theorem}
+
+\noindent Using Theorem~\ref{delta}, $\var \left( r ( \bm{\hat{\theta}}_u \right) = J \left( \var \left(  \bm{\hat{\theta}}_u \right) \right) \var \left(  \bm{\hat{\theta}}_u \right) J \left( \var \left(  \bm{\hat{\theta}}_u \right) \right)'$. This Wald test only uses unrestricted estimates.
+
+\end{document}

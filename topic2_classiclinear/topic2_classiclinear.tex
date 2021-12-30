@@ -1,0 +1,94 @@
+%Input preamble
+\input{preamble}
+\let\counterwithout\relax
+\let\counterwithin\relax
+\definecolor{maroon}{HTML}{4B0082}
+
+\begin{document}
+%\onehalfspacing
+
+\noindent \textbf{The Classic (Normal) Linear Regression Model.}\\
+\noindent Jorge Luis García \\
+\noindent e-mail: jlgarci@clemson.edu\\
+
+\noindent Recall that the (sample) model is
+\begin{equation}
+\bm{y} = \bm{x} \cdot \bm{\beta} + \bm{e}. \label{eq:model}
+\end{equation}
+
+\noindent \textbf{Terminology.} $\bm{y}$ is the dependent variable. $\bm{x}$ is the matrix of explanatory variables. A column $k$ in $\bm{x}$ is an explanatory variable, $\bm{x}_k$, where $k = 1, \ldots, K$. $\bm{e}$ is the error term.\\
+
+\noindent \textbf{Note.} The following assumptions are made on the population.\\
+
+\noindent \textbf{Assumption of the Classic (Normal) Linear Regression Model.} The assumptions about the model in Equation~\eqref{eq:model} are:
+\begin{enumerate}
+	\item \textbf{Linearity:} The relationship between $\bm{y}$ and $\bm{x}$ is linear. Linearity is an assumption about the parameter vector $\bm{\beta}$. 
+	\item \textbf{Full rank:} The columns of $\bm{x}$ are linearly independent. That is, there is no exact linear relationship among the explanatory variables.	
+	\item \textbf{Exogeneity:} The expected value of the error term for $i \in \mathcal{I}$ is independent of all of the explanatory variables for all of the individuals in the sample. As a convention, this expected value is set to $0$. Mathematically, $\mathbb{E} \left[ e_i | \bm{x} \right] = 0$ for $i \in \mathcal{I}$. 
+	\item \textbf{Homoskedasticity:} The conditional variance of $e_i$ is $\sigma^2$ for all $i \in \mathcal{I}$: $\var \left[ e_i | \bm{x} \right] = \sigma^2$. Additionally, $\cov \left( e_i , e_j | \bm{x} \right) = 0$ for $i,j \in \mathcal{I}$ with $i \neq j$. 
+	\item \textbf{Normality:} The error term $e_i$ is normally distributed, so that $e_i \sim \mathcal{N} \left( 0, \sigma^2 \right)$ for all $i \in \mathcal{I}$. 
+\end{enumerate}
+
+\noindent The first assumption is the core of the linear model, and it is not as restrictive as it seems. Linearity is on $\bm{\beta}$, but non-linearity in the dependent and explanatory variables is allowed for. The second assumption enables obtaining a unique solution when estimating $\bm{\beta}$ using OLS. Other mathematical implications and economic interpretation will be discussed later in the course. The third assumption is crucial for causal interpretation and will be discussed thoroughly in Econ 900-03. For now, we assume that it holds without in-depth discussion. The fourth and fifth assumptions are practical and enable to start the discussion, but are quickly discarded in most empirical work.\\ 
+
+\noindent \textbf{Unbiasedness of OLS.} The assumption of \textbf{Exogeneity} implies that OLS provides an unbiased estimator of $\bm{\beta}$: 
+\begin{align}
+	\mathbb{E} \left[ \hat{\bm{\beta}} \mid \bm{x} \right] &= \mathbb{E} \left[ {\left( \bm{x}' \bm{x} \right)}^{-1} \left( \bm{x}' \bm{y} \right) \mid \bm{x} \right]  \nonumber \\
+	& = {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{x}' \cdot \mathbb{E} \left[ \bm{y} \mid \bm{x} \right] \nonumber \\
+	& = {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{x}' \cdot \mathbb{E} \left[ \bm{x} \cdot \bm{\beta} + \bm{e} \mid \bm{x} \right] \nonumber \\
+	& = \bm{\beta} +  \mathbb{E} \left[\bm{e} \mid \bm{x} \right] \nonumber \\ 
+	& = \bm{\beta}
+\end{align}
+
+\noindent \textbf{The Variance of $\bm{e}$.} Recall that $\mathbb{E} \left[ e_{i} | \bm{x} \right] = 0$ and that $\var \left[ e_{i} | \bm{x} \right] = \mathbb{E} \left[ e_{i}^2 | \bm{x} \right] - {\mathbb{E} \left[ e_{i} | \bm{x} \right]}^2 $. Then, \textbf{Homoskedasticity} implies that  
+\begin{align}
+\var \left[ \bm{e} | \bm{x} \right] &= \mathbb{E} \begin{bmatrix}
+ 													\begin{pmatrix}
+ 													 	e_{1} \\ 
+ 													 	\vdots \\ 
+ 													 	e_{N}	
+ 													\end{pmatrix} &
+													\begin{pmatrix}
+														e_{1} & \cdots & e_{N}	
+													\end{pmatrix} \mid \bm{x}
+ 									  			 \end{bmatrix} \nonumber \\
+ 									&= \sigma^2 I_{N}, 
+\end{align}
+\noindent where $I_{N}$ is the identity matrix of dimension $N$ (the number of individuals in the sample).\\
+
+\noindent \textbf{The Distributions of $\bm{e}$, $\bm{y}$, and $\bm{\beta}$.} From Exogeneity and Homoskedasticity of $\bm{e}$, it follows that 
+		\begin{align}
+			\bm{e} \mid \bm{x} \sim \mathcal{N} \left( \bm{0}, \sigma^2 I_{N} \right). 	
+		\end{align}
+\noindent Also,
+	\begin{align}
+		\bm{y} \mid \bm{x} \sim \mathcal{N} \left( \bm{x} \cdot \bm{\beta}, \sigma^2 I_{N} \right). 
+	\end{align} 
+
+\noindent Finally, from \textbf{Unbiasedness of OLS}, it follows that $\mathbb{E} \left[ \hat{\bm{\beta}} \mid \bm{x} \right] = \bm{\beta}$. The variance is as follows. First, note that 
+		\begin{align}
+				\var \left[ \hat{\bm{\beta}} \mid \bm{x} \right] = \mathbb{E} \left[ \hat{\bm{\beta}} \cdot \hat{\bm{\beta}}' \mid \bm{x} \right] - {\bm{\beta}} \cdot {\bm{\beta}}'. 
+		\end{align}
+Second, 
+		\begin{align}
+			\mathbb{E} \left[ \hat{\bm{\beta}} \cdot \hat{\bm{\beta}}' \mid \bm{x} \right] & = {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{x}' \cdot \mathbb{E} \left[ \bm{y} \cdot \bm{y}' \mid \bm{x} \right] \cdot \bm{x} {\left( \bm{x}' \bm{x} \right)}^{-1} \nonumber \\ 
+					    & =  {\left( \bm{x}' \bm{x} \right)}^{-1} \bm{x}' \cdot 
+					    \left[ \bm{x} \bm{\beta} \bm{\beta}' \bm{x}' + \sigma^2 I_{N} \right] 
+					    \cdot \bm{x} {\left( \bm{x}' \bm{x} \right)}^{-1} \nonumber \\
+					    & = \bm{\beta} \bm{\beta}' + \sigma^2  (\bm{x}' \bm{x})^{-1}, 
+		\end{align}
+\noindent so that $\var \left[ \hat{\bm{\beta}} \mid \bm{x} \right] = \sigma^2  (\bm{x}' \bm{x})^{-1}$ and
+	\begin{align}
+		 \hat{\bm{\beta}} \mid \bm{x} \sim \mathcal{N} \left( \bm{\beta} , \sigma^2  { \left( \bm{x}' \bm{x} \right) }^{-1}\right). 
+	\end{align} 
+
+\noindent \textbf{An Estimator of the Variance of $e_i$.} An estimate of the variance of $e_i$ is necessary to obtain the variance of $\hat{\bm{\beta}} \mid \bm{x}$. An unbiased estimator is $\hat{\sigma}^2 = \frac{e' \cdot e}{N - K}$.\\
+
+\noindent \textbf{Marginal Effects.} For $i \in \mathcal{I}$, the model is 
+\begin{align}
+	y_{i} = \beta_0 + x_{i1} \cdot \beta_1 + \ldots +  x_{iK} \cdot \beta_K + e_{i}. 
+\end{align}
+
+\noindent Under \textbf{Exogeneity}, $ \beta_k = \frac{ \partial \mathbb{E} \left[ y_{i} | \bm{x} \right] } { \partial x_{ik} }$ for $k = 1, \ldots, K$. That is, $\beta_k$ is the marginal change in the expected value of $y_i$ upon a one-unit increase in $x_{ik}$ (conditional on $\bm{x}$). In the most basic linear model, the marginal effect is the same for all the individuals in the sample.
+
+\end{document}
